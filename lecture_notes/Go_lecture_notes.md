@@ -1,5 +1,7 @@
 # Go 学习课程笔记
 
+- [课程地址](https://coding.imooc.com/class/180.html)
+
 ## useful link
 
 - https://golang.google.cn/
