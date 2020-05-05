@@ -23,7 +23,7 @@
 - go proxy
     - https://goproxy.io/zh/
     - 对于 go 版本在 1.13 以上的，如下设置完下面几个环境变量后，go 命令将从公共代理镜像中快速拉取所需的依赖代码。
-    ```
+    ```shell
     go env -w GO111MODULE=on
     go env -w GOPROXY=https://goproxy.io,direct
     
@@ -35,12 +35,12 @@
     - 有镜像功能，能够下载 golang.org 的包
     - doc https://github.com/gpmgo/docs/tree/master/zh-CN
     - 安装
-        ```
+        ```shell
         go get -v -u github.com/gpmgo/gopm
         ```
     - 需要安装 git
     - 使用
-        ```
+        ```shell
         gopm get -h
         gopm get -g -u -v golang.org/xxxx
         ```
@@ -53,7 +53,7 @@
     - 在 vs code 中 ctrl+shift+p，输入 go:install，选择 Go:Install/Update Tools 命令，勾选所有插件，回车安装。
     - 如果配置了 go proxy，则能正常安装成功。
     - 如果不想使用 go proxy，则可以如下下载插件源码，再进行安装
-    ```
+    ```shell
     创建 GOPATH/src/golang.org/x 目录
     git clone https://github.com/golang/tools.git tools
     git clone https://github.com/golang/lint.git
@@ -74,22 +74,22 @@
     - 变量定义
         - 变量名在前，类型在后
         - 相同类型的变量可一行定义赋值
-        ```
+        ```go
         var a, b int = 1， 2
         ```
         - 有类型推导，省略类型
-        ```
+        ```go
         var a, b = 1, 1.2
         ```
         - 方法内本地变量可省略 var
-        ```
+        ```go
         a, b , v6:= 1, 1.2, 6
         // 虽然 v6 已经定义过了，但是 v7 还没有定义，此处仍然可以使用 :=
     	v6, v7 := 6, 7
     	fmt.Printf("v6=%v, v7=%v\n", v6, v7)
         ```
         - 可批量定义
-        ```
+        ```go
         var (
             a = 1
             b = 2.1
@@ -104,7 +104,7 @@
             - %t 格式化布尔型
             - %T 格式化变量类型
             - %v 自动推断类型
-        ```
+        ```go
         fmt.Printf("v1=%d, v2=%s, v3=%t, v4=%c", v1, v2, v3, v4)
         fmt.Println()
         fmt.Printf("v5=%v, v6=%.2f\n", v5, v6)
@@ -134,7 +134,7 @@
         
         - 没有 double 类型
     - 浮点数都有不精确的问题(IEEE754 浮点数表示标准)，java 中是使用 BigDecimal 类解决浮点数精确计算和大数运算问题，go 中使用 math/big 解决
-    ```
+    ```go
     func bigNum() {
     	f1 := 0.09
     	f2 := 2.1
@@ -155,7 +155,7 @@
     ```
     - complex64, complex128
         - 复数类型 
-        ```
+        ```go
         不能写做 4*i，否则 i 会识别成变量
         var c = 3 + 4i
         ```
@@ -169,13 +169,13 @@
         ```
     - 类型转换
         - go 中只有强制、显式的类型转换，没有隐式类型转换
-        ```
+        ```go
         var i int= int(0.09f * 2.1f) 
         ```
 - 常量
     
     - 常量定义时不指定类型的话，可作为各种类型使用
-```
+```go
 package main
 
 import (
@@ -203,7 +203,7 @@ func main() {
 ```
 - 枚举
     - 使用常量来实现枚举
-    ```
+    ```go
     /*
     iota 是一个常量定义中使用的自增变量，从 0 开始，每换一行自增 1，遇到 const 关键字就重置为 0。
     常量定义时，后面的行如果省略赋值，会跟前一行一样的赋值（但是 iota 会自增）
@@ -239,7 +239,7 @@ func main() {
     ```
 - 条件
     - if
-    ```
+    ```go
     func getFileContents() ([]byte, error) {
     	const fileName = "D:/go/src/atal.github.com/atal/learngo/grammar/flow/testfile.txt"
     	return ioutil.ReadFile(fileName)
@@ -256,7 +256,7 @@ func main() {
     ```
     - switch
         - switch 后也可以不跟变量，直接 case 判断条件
-    ```
+    ```go
     // switch 中每个 case 默认进行 break，如果不需要 break，需要写 fallthrough
     func switchCondition() {
     	const con = "x"
@@ -273,7 +273,7 @@ func main() {
     }
     ```
 - 循环
-    ```
+    ```go
     func loop() {
         var sum int
         for i := 0; i < 10; i++ {
@@ -316,13 +316,13 @@ func main() {
     - error 当作返回值进行传递，没有 try...catch 语法
     - 有可变参数列表
     - 无默认参数，无可选参数语法，无重载
-        ```
+        ```go
         func plug(a , b int) int {
             return a + b
         }
         ```
 - 指针
-    ```
+    ```go
     // 定义一个 int 型变量 a
     var a int
     // 定义整型指针类型变量 pa，并赋值为变量 a 的地址
@@ -335,7 +335,7 @@ func main() {
 
 - 数组
     - 定义数组
-        ```
+        ```go
         // 定义 5 个元素的 int 型数组，初始值是 0
         var arr1 [5]int
         
@@ -346,7 +346,7 @@ func main() {
         var arr3 [4][5] int
         ```
     - go 中数组是值类型，函数传递时是值传递，因此会进行值拷贝，对大数组需要注意此问题。而 java 中是引用传递
-        ```
+        ```go
         // 定义一个接收长度为 5 的 int 型数组
         func f1(arr [5]int){
             
@@ -363,7 +363,7 @@ func main() {
             }
             ```
         - 通过 range 遍历
-            ```
+            ```go
             func rangeArray(arr [5]int) {
             	for i, v := range arr {
             		fmt.Printf("arr index %d value %d\n", i, v)
@@ -372,7 +372,7 @@ func main() {
             ```
 - 切片
     - 切片是数组的一个视图，对切片的修改，会影响源数组。因此通过函数传递切片，是引用传递
-        ```
+        ```go
         // 数组
         arr : = [...]int{0, 1, 2, 3, 4, 5, 6}
         
@@ -385,9 +385,13 @@ func main() {
         // 可以对切片再次切片
         arrSlice1 := arrSlice1[:]
         ```
-    - 切片的扩展。切片内部维护了一个指向头部的指针 ptr、一个长度值 len，一个容量值 cap
+        
+    - 切片的扩展。
+        
+        - 切片内部维护了一个指向头部的指针 ptr、一个长度值 len，一个容量值 cap
         - 对切片进行重新切片时，下标可以向后超出自身的长度值 len，但不能超出容量值 cap
-        ```
+        
+        ```go
          var arr [...]int := {0, 1, 2, 3, 4, 5, 6}
          
          // slice 值为 {1, 2, 3}
@@ -396,11 +400,12 @@ func main() {
          // 索引 6 超出了变量 slice 的长度值 len，但没有超出 arr 数组的容量值 cap
          // slice1 值为 {2, 3, 4}
          slice1 := slice[1:4]
-        ```
+    ```
+        
     - 切片的 append
-        ```
+        ```go
         var arr = [...]int{0, 1, 2, 3, 4, 5, 6}
-
+    
         func sliceAppend() {
         	slice := arr[3:5]
         	// 对 slice 进行追加，会改变源数组的内容
@@ -413,6 +418,7 @@ func main() {
         	fmt.Println(slice, "\n", slice0, "\n", slice1, "\n", slice2)
         }
         ```
+        
     - 创建切片
         ```
         func createSlice() {
@@ -432,8 +438,9 @@ func main() {
     	slice2 := make([]int, 5, 10)
     	}
     	```
+    	
     - 切片的删除
-        ```
+        ```go
         func sliceDel() {
         	fmt.Println("in sliceDel()")
         	slice := arr[:]
@@ -450,8 +457,9 @@ func main() {
         	fmt.Printf("slice value=%v, len=%d, cap=%d\n", slice, len(slice), cap(slice))
         }
         ```
+        
     - 切片的复制
-        ```
+        ```go
         func sliceCopy() {
         	// 此处只是定义了一个为 nil 的 slice，没有空间，无法拷贝
         	//var targetSlice []int
@@ -464,7 +472,7 @@ func main() {
         ```
 - map
     - 定义 map
-        ```
+        ```go
         // 定义一个 key 为 string 类型，value 为 int 类型的 map 并赋值
         var map0 = map[string]int{
         	"k0": 0,
@@ -481,7 +489,7 @@ func main() {
         }
         ```
     - map 的操作
-        ```
+        ```go
         func mapOp() {
         	// 取得 key 为 k0 的 value
         	v0 := map0["k0"]
@@ -516,7 +524,7 @@ func main() {
         - 除了 slice、function、map 类型，其他内建类型都可以做 key
         - 当 Struct 不包含 slice、function、map 类型时，可做 key
 - 字符串与字符 rune
-    ```
+    ```go
     var chStr = "hi中国啊。"
 
     func strContent() {
@@ -565,7 +573,7 @@ func main() {
 
 - 使用结构体能实现部分面向对象
 - 结构体只支持封装，不支持继承和多态，而通过接口进行扩展
-    ```
+    ```go
     // 定义一个结构体
     type treeNode struct {
     	value       string
@@ -639,7 +647,7 @@ func main() {
     - public 的结构体和方法，必须要有注释，并且注释要以结构体名或方法名开头
     - package 的注释要以 "Package + 包名" 开头
     - 文件 tree/node.go
-        ```
+        ```go
         // Package tree 树结构相关包
         package tree
 
@@ -657,7 +665,7 @@ func main() {
         }
         ```
     - 文件 tree/traversal.go
-        ```
+        ```go
         package tree
 
         // Traverse 中序遍历打印
@@ -671,7 +679,7 @@ func main() {
         }
         ```
     - 使用结构体 Node 时，必须用包名 tree 开头引用
-        ```
+        ```go
         package main
 
         import "atal.github.com/atal/learngo/package/tree"
@@ -684,7 +692,7 @@ func main() {
 #### 扩展已有类型
 - 可以多系统类型或第三方类型进行扩充
 - 方法一，使用组合方式进行扩展
-    ```
+    ```go
     // Xnode 对 tree.Node 进行扩展
     type Xnode struct {
     	Node *tree.Node
@@ -706,7 +714,7 @@ func main() {
     }
     ```
 - 使用别名方式进行扩展
-    ```
+    ```go
     package queue
 
     // IntQueue 使用别名方式扩充slice实现整型队列
@@ -745,7 +753,7 @@ func main() {
 
 - duck typing
 - 定义接口
-    ```
+    ```go
     package face
 
     // Retriever 定义了一个包含 Get 方法的接口
@@ -755,7 +763,7 @@ func main() {
     ```
 - 实现接口
     - 实现一个接口，只需要实现接口具有的方法，其他方面跟接口没有关系了，不像 java 那样强制实现
-    ```
+    ```go
     package qq
 
     import (
@@ -785,7 +793,7 @@ func main() {
     }
     ```
 - 接口的使用
-    ```
+    ```go
     package main
 
     import (
@@ -1333,15 +1341,17 @@ func main() {
     }   
     ```
 #### 测试覆盖率
-    - 运行 go test 时，可以增加 -cover 参数，会打印覆盖率
-    ```
-    go test -cover .
-    ```
-    - 或者将覆盖率结果写到文件中，使用浏览器进行查看源码，使用不同颜色标记哪些覆盖了哪些没有覆盖
-    ```
-    go test -coverprofile=c.out .
-    go tool cover -html=c.out
-    ```
+~~~shell
+- 运行 go test 时，可以增加 -cover 参数，会打印覆盖率
+```
+go test -cover .
+```
+- 或者将覆盖率结果写到文件中，使用浏览器进行查看源码，使用不同颜色标记哪些覆盖了哪些没有覆盖
+```
+go test -coverprofile=c.out .
+go tool cover -html=c.out
+```
+~~~
 #### 性能测试
 - 性能测试方法名以 Benchmark 开头，循环次数 b.N 由框架自己决定
 - 执行如下命令可执行性能测试 go test -bench .
@@ -1359,7 +1369,7 @@ func main() {
     ```
 - 查看性能消耗点
     - 到 http://graphviz.org/ 下载安装生成 svg 文件的工具
-    ```
+    ```shell
     // 生成分析结果
     go test -bench . -cpuprofile cpu.out
     
@@ -1372,72 +1382,74 @@ func main() {
     - 应该考虑多种输入的情况下，比较一个函数的写法（算法）的性能
     - string 转码为 rune 是需要消耗性能的
 #### 测试 http
-    ```go
-    package webserver
-    
-    import (
-    	"io/ioutil"
-    	"net/http"
-    	"net/http/httptest"
-    	"strings"
-    	"testing"
-    )
-    
-    func createPanicErr(writer http.ResponseWriter, request *http.Request) error {
-    	panic(123)
-    }
-    
-    func createUserErr(writer http.ResponseWriter, request *http.Request) error {
-    	return userErr("user error")
-    }
-    
-    var tests = []struct {
-    	h       requestHanlder
-    	code    int
-    	message string
-    }{
-    	{createPanicErr, 500, http.StatusText(http.StatusInternalServerError)},
-    	{createUserErr, 400, "user error"},
-    }
-    
-    // TestWebHandler 直接测试 handlerWrapper() 方法，使用假的 request 和 response
-    func TestWebHandler(t *testing.T) {
-    	for _, tt := range tests {
-    		f := handlerWrapper(tt.h)
-    		resp := httptest.NewRecorder()
-    		req := httptest.NewRequest(
-    			http.MethodGet,
-    			"http://www.qq.com",
-    			nil,
-    		)
-    		f(resp, req)
-    
-    		b, _ := ioutil.ReadAll(resp.Body)
-    		body := strings.Trim(string(b), "\n")
-    		if resp.Code != tt.code || body != tt.message {
-    			t.Errorf("expect (%d, %s), got (%d, %s)", tt.code, tt.message,
-    				resp.Code, body)
-    		}
-    	}
-    }
-    
-    // TestWebServer 启动一个 web 服务器来测试
-    func TestWebServer(t *testing.T) {
-    	for _, tt := range tests {
-    		f := handlerWrapper(tt.h)
-    		server := httptest.NewServer(http.HandlerFunc(f))
-    		resp, _ := http.Get(server.URL)
-    
-    		b, _ := ioutil.ReadAll(resp.Body)
-    		body := strings.Trim(string(b), "\n")
-    		if resp.StatusCode != tt.code || body != tt.message {
-    			t.Errorf("expect (%d, %s), got (%d, %s)", tt.code, tt.message,
-    				resp.StatusCode, body)
-    		}
-    	}
-    }
-    
-    ```
+
+- 演示 http 的测试
+
+```go
+package webserver
+
+import (
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+)
+
+func createPanicErr(writer http.ResponseWriter, request *http.Request) error {
+	panic(123)
+}
+
+func createUserErr(writer http.ResponseWriter, request *http.Request) error {
+	return userErr("user error")
+}
+
+var tests = []struct {
+	h       requestHanlder
+	code    int
+	message string
+}{
+	{createPanicErr, 500, http.StatusText(http.StatusInternalServerError)},
+	{createUserErr, 400, "user error"},
+}
+
+// TestWebHandler 直接测试 handlerWrapper() 方法，使用假的 request 和 response
+func TestWebHandler(t *testing.T) {
+	for _, tt := range tests {
+		f := handlerWrapper(tt.h)
+		resp := httptest.NewRecorder()
+		req := httptest.NewRequest(
+			http.MethodGet,
+			"http://www.qq.com",
+			nil,
+		)
+		f(resp, req)
+
+		b, _ := ioutil.ReadAll(resp.Body)
+		body := strings.Trim(string(b), "\n")
+		if resp.Code != tt.code || body != tt.message {
+			t.Errorf("expect (%d, %s), got (%d, %s)", tt.code, tt.message,
+				resp.Code, body)
+		}
+	}
+}
+
+// TestWebServer 启动一个 web 服务器来测试
+func TestWebServer(t *testing.T) {
+	for _, tt := range tests {
+		f := handlerWrapper(tt.h)
+		server := httptest.NewServer(http.HandlerFunc(f))
+		resp, _ := http.Get(server.URL)
+
+		b, _ := ioutil.ReadAll(resp.Body)
+		body := strings.Trim(string(b), "\n")
+		if resp.StatusCode != tt.code || body != tt.message {
+			t.Errorf("expect (%d, %s), got (%d, %s)", tt.code, tt.message,
+				resp.StatusCode, body)
+		}
+	}
+}
+```
 ## 文档工具
 
 - go doc 命令查看具体包或结构体或方法的文档注释
